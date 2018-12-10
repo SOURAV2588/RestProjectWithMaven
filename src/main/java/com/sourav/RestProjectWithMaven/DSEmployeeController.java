@@ -3,6 +3,7 @@ package com.sourav.RestProjectWithMaven;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,23 +18,41 @@ public class DSEmployeeController {
 	
 	@GET
 	@Path("/{employeeTriagram}")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public DSEmployee getEmployee(@PathParam("employeeTriagram") String trigramId) {
 		return MockDBClass.getEmployee(trigramId);
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<DSEmployee> getAllEmployees() {
 		return MockDBClass.getAllEmployees();
 	}
 	
 	@POST
-	public void incompletePostMethod() {}
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addEmployee(DSEmployee dsEmployee) {
+		MockDBClass.addEmployee(dsEmployee);
+	}
 	
 	@PUT
-	public void incompletePutMethod() {}
+	@Path("/{employeeTriagram}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public DSEmployee updateEmployee(@PathParam("employeeTriagram") String trigramId, DSEmployee updatedDSEmployee) {
+		DSEmployee oldDSEmployee = MockDBClass.findDSEmployee(trigramId);
+		oldDSEmployee.setFirstName(updatedDSEmployee.getFirstName());
+		oldDSEmployee.setLastName(updatedDSEmployee.getLastName());
+		oldDSEmployee.setTeamName(updatedDSEmployee.getTeamName());
+		oldDSEmployee.setBrand(updatedDSEmployee.getBrand());
+		return oldDSEmployee;
+	}
 	
 	@DELETE
-	public void incompleteDeleteMethod() {}
+	@Path("/{employeeTriagram}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void incompleteDeleteMethod(@PathParam("employeeTriagram") String trigramId) {
+		MockDBClass.deleteDSEmployee(trigramId);
+	}
 }

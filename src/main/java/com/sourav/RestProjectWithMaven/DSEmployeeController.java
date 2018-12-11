@@ -14,45 +14,38 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/employees")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class DSEmployeeController {
+	
+	MockDBClass mockDBClass = new MockDBClass();
 	
 	@GET
 	@Path("/{employeeTriagram}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public DSEmployee getEmployee(@PathParam("employeeTriagram") String trigramId) {
-		return MockDBClass.getEmployee(trigramId);
+		return mockDBClass.getEmployee(trigramId);
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	public List<DSEmployee> getAllEmployees() {
-		return MockDBClass.getAllEmployees();
+		return mockDBClass.getAllEmployees();
 	}
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void addEmployee(DSEmployee dsEmployee) {
-		MockDBClass.addEmployee(dsEmployee);
+	public String addEmployee(DSEmployee dsEmployee) {
+		mockDBClass.addEmployee(dsEmployee);
+		return "POST WORKS";
 	}
 	
 	@PUT
 	@Path("/{employeeTriagram}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public DSEmployee updateEmployee(@PathParam("employeeTriagram") String trigramId, DSEmployee updatedDSEmployee) {
-		DSEmployee oldDSEmployee = MockDBClass.findDSEmployee(trigramId);
-		oldDSEmployee.setFirstName(updatedDSEmployee.getFirstName());
-		oldDSEmployee.setLastName(updatedDSEmployee.getLastName());
-		oldDSEmployee.setTeamName(updatedDSEmployee.getTeamName());
-		oldDSEmployee.setBrand(updatedDSEmployee.getBrand());
-		return oldDSEmployee;
+		return mockDBClass.updateEmployee(trigramId,updatedDSEmployee);
 	}
 	
 	@DELETE
 	@Path("/{employeeTriagram}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void incompleteDeleteMethod(@PathParam("employeeTriagram") String trigramId) {
-		MockDBClass.deleteDSEmployee(trigramId);
+		mockDBClass.deleteDSEmployee(trigramId);
 	}
 }

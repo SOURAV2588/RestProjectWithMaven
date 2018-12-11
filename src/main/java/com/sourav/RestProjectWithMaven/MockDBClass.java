@@ -7,15 +7,17 @@ public class MockDBClass {
 	
 	static List<DSEmployee> employeeList = new ArrayList<>();
 	
-	public static List<DSEmployee> getAllEmployees() {
-		DSEmployee sourav = new DSEmployee("SOURAV","GHOSH","SGH4","IS REQUIREMENTS","DES");
-		DSEmployee shuvam = new DSEmployee("SHUVAM","PARGAL","SPL7","LEX APPS","DES");
-		employeeList.add(sourav);
-		employeeList.add(shuvam);
+	public List<DSEmployee> getAllEmployees() {
+		if(employeeList.isEmpty()) {
+			DSEmployee sourav = new DSEmployee("SOURAV","GHOSH","SGH4","IS REQUIREMENTS","DES");
+			DSEmployee shuvam = new DSEmployee("SHUVAM","PARGAL","SPL7","LEX APPS","DES");
+			employeeList.add(sourav);
+			employeeList.add(shuvam);
+		}
 		return employeeList;
 	}
 	
-	public static DSEmployee getEmployee(String trigramId) {
+	public DSEmployee getEmployee(String trigramId) {
 		for(DSEmployee employee : getAllEmployees()) {
 			if (employee.getTrigramId().equalsIgnoreCase(trigramId)) {
 				return employee;
@@ -24,11 +26,20 @@ public class MockDBClass {
 		return null;
 	}
 	
-	public static void addEmployee(DSEmployee dsEmployee) {
+	public DSEmployee updateEmployee(String trigramId, DSEmployee updatedDSEmployee) {
+		DSEmployee oldDSEmployee = findDSEmployee(trigramId);
+		oldDSEmployee.setFirstName(updatedDSEmployee.getFirstName());
+		oldDSEmployee.setLastName(updatedDSEmployee.getLastName());
+		oldDSEmployee.setTeamName(updatedDSEmployee.getTeamName());
+		oldDSEmployee.setBrand(updatedDSEmployee.getBrand());
+		return oldDSEmployee;
+	}
+	
+	public void addEmployee(DSEmployee dsEmployee) {
 		employeeList.add(dsEmployee);
 	}
 	
-	public static DSEmployee findDSEmployee(String triagramId) {
+	public DSEmployee findDSEmployee(String triagramId) {
 		for(DSEmployee dsEmployee : getAllEmployees()) {
 			if(dsEmployee.getTrigramId().equalsIgnoreCase(triagramId)) {
 				return dsEmployee;
@@ -37,7 +48,7 @@ public class MockDBClass {
 		return null;
 	}
 	
-	public static void deleteDSEmployee(String triagramId) {
+	public void deleteDSEmployee(String triagramId) {
 		DSEmployee toBeDeleted = new DSEmployee();
 		for(DSEmployee dsEmployee : getAllEmployees()) {
 			if(dsEmployee.getTrigramId().equalsIgnoreCase(triagramId)) {
